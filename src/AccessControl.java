@@ -75,7 +75,11 @@ public class AccessControl {
             if (userExists > -1) {   // user exists
                 return false;
             } else {    // user doesn't exist, so creating one
-                users.add(new User(username));
+                User newUser = new User(username);
+                newUser.setPassword(DEFAULT_PASSWORD);
+                newUser.setIsAdmin(false);
+                //users.add(new User(username));
+                users.add(newUser);
                 return true;
             } 
         }
