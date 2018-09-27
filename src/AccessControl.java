@@ -10,9 +10,11 @@ public class AccessControl {
     // new users or when we reset a user's password.
 
 
-    // TODO: Your AccessControl constructor needs to make a new AccessControl object.
-    // Any non-static field should be initialized here. Your constructor should also check whether
-    // each class variable has been initialized and, if not, initialize them.
+    /**
+     * AccessControl constructor which creates a new AccessControl object. The constructor also
+     * check to see whether each class variable has been initialized and, if not, initialize them.
+     * Any non-static field has been initialized here.
+     */
     public AccessControl() {
 
         if (users == null) {
@@ -37,11 +39,16 @@ public class AccessControl {
     }
 
 
-    // Your isValidLogin method should return true if the username/password pair matches any user in
-    // your users ArrayList and false otherwise. This method should be static, since it only relies
-    // on the static users ArrayList. This method should not have any side-effects. (For example, do
-    // not set the currentUser here.) Its only job is to determine whether a username/password pair
-    // is valid.
+    /**
+     * This method checks to make sure that username and password matches up. The method returns
+     * true if the username/password pair matches any user in your users ArrayList and false
+     * otherwise. Its only job is to determine whether a username/password pair is valid.
+     * 
+     * @param username is the new transaction group being added (perfect size).
+     * @param password is the collection that newTransactions is being added to (oversize).
+     * @return a boolean value (true/false) to see if username and password matches up
+    */
+
     public static boolean isValidLogin(String username, String password) {
         
         int userExists = userExists(username); //checks if username exisit
@@ -56,16 +63,37 @@ public class AccessControl {
     } // Report whether a
       // given username/password pair is a valid login
 
+    /**
+     * This method sets the variable value of currentUser equal to a null value when called. The
+     * method also returns no value, it's only job is to modify the currentUser
+     */
     public void logout() {
         currentUser = null;
     } // Log out the current user
 
+    
+    /**
+     * This method modifies the password value of the currentUser by calling the setPassword method
+     * from the User Class.
+     * 
+     * @param newPassword is the new password value being held by currentUser. The method also
+     *        returns no value, it's only job is to modify the currentUser's password value.
+     */
+    
     public void changePassword(String newPassword) {
         this.currentUser.setPassword(newPassword);
     } // Change the current user's password
 
 
-    // ONLY ADMIN METHOD
+    /**
+     * This method checks to make sure that username put into the parameter is an Addmin or that its
+     * username value is not null. The method returns true if the username is able to be created
+     * without admin access.
+     * 
+     * @param username is the new transaction group being added (perfect size).
+     * @return a boolean value (true/false) to see if username was created or not without Admin
+     *         abilities
+     */
     public boolean addUser(String username) {
 
         int userExists = userExists(username); //checks if username exisit
@@ -85,9 +113,17 @@ public class AccessControl {
         }
         return false;
         
-    } // Create a new user (non-admin)
+    } 
 
-    // ONLY ADMIN METHOD
+    /**
+     * This method checks to make sure that username put into the parameter is an Addmin or that its
+     * username value is not null. The method returns true if the username is able to be created
+     * with admin access.
+     * @param username is the new transaction group being added (perfect size).
+     * @param isAdmin is a boolean value which notifies if something has Admin access 
+     * @return a boolean value (true/false) to see if username was created or not with Admin
+    *         abilities
+    */
     public boolean addUser(String username, boolean isAdmin) {
         
         int userExists = userExists(username); //checks if username exisit
@@ -105,7 +141,15 @@ public class AccessControl {
     } // Create a new user
       // and specify their admin status
 
-    // ONLY ADMIN METHOD
+    /**
+     * This method checks to make sure that username put into the parameter is an Addmin or that its
+     * username value is not null. The method returns true if the username is able to be created
+     * with admin access.
+     * @param username is the new transaction group being added (perfect size).
+     * @param isAdmin is a boolean value which notifies if something has Admin access 
+     * @return a boolean value (true/false) to see if username was created or not with Admin
+     *         abilities
+     */
     public boolean removeUser(String username) {
 
         int userExists = userExists(username); //checks if username exisit
@@ -122,7 +166,15 @@ public class AccessControl {
         return false;
     } // Remove a user
 
-    // ONLY ADMIN METHOD
+    /**
+     * This method checks to make sure that username put into the parameter is an Addmin or that its
+     * username value is not null. The method returns true if the username is able to be created
+     * with admin access.
+     * @param username is the new transaction group being added (perfect size).
+     * @param isAdmin is a boolean value which notifies if something has Admin access 
+     * @return a boolean value (true/false) to see if username was created or not with Admin
+     *         abilities
+    */
     public boolean giveAdmin(String username) {
         int userExists =userExists(username); ;//checks if username exisit;
         
@@ -139,7 +191,15 @@ public class AccessControl {
         return false;
     } // Give a user admin power
 
-    // ONLY ADMIN METHOD
+    /**
+    * This method checks to make sure that username put into the parameter is an Addmin or that its
+     * username value is not null. The method returns true if the username is able to be created
+     * with admin access.
+     * @param username is the new transaction group being added (perfect size).
+     * @param isAdmin is a boolean value which notifies if something has Admin access 
+     * @return a boolean value (true/false) to see if username was created or not with Admin
+     *         abilities
+    */
     public boolean takeAdmin(String username) {
 int userExists =userExists(username); ;//checks if username exisit;
         
@@ -157,6 +217,15 @@ int userExists =userExists(username); ;//checks if username exisit;
     } // Remove a user's admin power
 
     // ONLY ADMIN METHOD
+    /**
+     * This method checks to make sure that username put into the parameter is an Addmin or that its
+     * username value is not null. The method returns true if the username is able to be created
+     * with admin access.
+     * @param username is the new transaction group being added (perfect size).
+     * @param isAdmin is a boolean value which notifies if something has Admin access 
+     * @return a boolean value (true/false) to see if username was created or not with Admin
+    *         abilities
+    */
     public boolean resetPassword(String username) {
         int userExists =userExists(username); ;//checks if username exisit;
         
@@ -204,7 +273,15 @@ int userExists =userExists(username); ;//checks if username exisit;
         return userIndex;
     }
 
-
+    /**
+     * This method checks to make sure that username put into the parameter is an Addmin or that its
+      * username value is not null. The method returns true if the username is able to be created
+      * with admin access.
+      * @param username is the new transaction group being added (perfect size).
+      * @param isAdmin is a boolean value which notifies if something has Admin access 
+      * @return a boolean value (true/false) to see if username was created or not with Admin
+      *         abilities
+      */
 
     public void loginScreen(Scanner userInputScanner) {
 
@@ -246,7 +323,16 @@ int userExists =userExists(username); ;//checks if username exisit;
 //  resetpw [username]
 //  Run the appropriate method
 
-
+    /**
+     * This method checks to make sure that username put into the parameter is an Addmin or that its
+     * username value is not null. The method returns true if the username is able to be created
+     * with admin access.
+     * @param username is the new transaction group being added (perfect size).
+     * @param isAdmin is a boolean value which notifies if something has Admin access 
+     * @return a boolean value (true/false) to see if username was created or not with Admin
+     *         abilities
+     */
+    
     public void sessionScreen(String username, Scanner userInputScanner) {
 
             String inputUser, command, param1, param2;
@@ -374,6 +460,16 @@ int userExists =userExists(username); ;//checks if username exisit;
     // The setCurrentUser method should not be used by any other method in AccessControl, but may be
     // very useful for writing test methods. You must implement it even if you do not use it in any
     // test methods. (We may use it when testing your code.)
+    
+    /**
+     * This method checks to make sure that username put into the parameter is an Addmin or that its
+     * username value is not null. The method returns true if the username is able to be created
+     * with admin access.
+     * @param username is the new transaction group being added (perfect size).
+     * @param isAdmin is a boolean value which notifies if something has Admin access 
+     * @return a boolean value (true/false) to see if username was created or not with Admin
+     *         abilities
+     */
     public void setCurrentUser(String username) {
 
         for (int i = 0; i < users.size(); i++) {
