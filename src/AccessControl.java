@@ -77,7 +77,7 @@ public class AccessControl {
             } else {    // user doesn't exist, so creating one
                 User newUser = new User(username);
                 newUser.setPassword(DEFAULT_PASSWORD);
-                newUser.setIsAdmin(false);
+                newUser.setPassword(DEFAULT_PASSWORD);
                 //users.add(new User(username));
                 users.add(newUser);
                 return true;
