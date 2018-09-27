@@ -21,11 +21,7 @@ public class AccessControl {
         if (users == null) {
             users = new ArrayList<User>();
 
-            // User admin = new User("admin", "root", true);
-
             users.add(new User("admin", "root", true));
-
-
         }
 
         currentUser = null;
@@ -54,12 +50,20 @@ public class AccessControl {
      */
 
     public static boolean isValidLogin(String username, String password) {
+<<<<<<< HEAD
         for (int i = 0; i < users.size(); i++) {
             if (users.get(i).getUsername() == username && users.get(i).isValidLogin(password)) {
                 // grabs a username from the users arraylist and checks that the slected username is
                 // the same as the parameter for username. The same is done for the password
                 // parameter by
                 // calling the isValidLogin method
+=======
+        
+        int userExists = userExists(username); //checks if username exisit
+        
+        if (userExists > -1) {   // user exists
+            if (users.get(userExists).getUsername().equalsIgnoreCase(username) && users.get(userExists).isValidLogin(password)) {
+>>>>>>> e6bd0f15ebd719cb7e7b08ad3cb2649644811822
                 return true;
             }
         }
@@ -99,12 +103,19 @@ public class AccessControl {
     // ONLY ADMIN METHOD
     public boolean addUser(String username) {
 
-        if (!(this.currentUser == null) || isCurrentUserAdmin()) {
+        int userExists = userExists(username); //checks if username exisit
 
-            return true;
+        if (isCurrentUserAdmin()) {
+
+            if (userExists > -1) {   // user exists
+                return false;
+            } else {    // user doesn't exist, so creating one
+                users.add(new User(username));
+                return true;
+            } 
         }
         return false;
-        // user.add(;
+        
     } // Create a new user (non-admin)
 
     // ONLY ADMIN METHOD
@@ -118,6 +129,7 @@ public class AccessControl {
      *         abilities
      */
     public boolean addUser(String username, boolean isAdmin) {
+<<<<<<< HEAD
         if (isCurrentUserAdmin() || !(this.currentUser == null)) {
 
             // checks if user exists with same username
@@ -128,8 +140,18 @@ public class AccessControl {
             }
 
 
+=======
+        
+        int userExists = userExists(username); //checks if username exisit
+>>>>>>> e6bd0f15ebd719cb7e7b08ad3cb2649644811822
 
-            return true;
+        if (isCurrentUserAdmin()) {
+            if (userExists > -1) {   // user exists
+                return false;
+            } else { // user doesn't exist, so creating one
+                users.add(new User(username, DEFAULT_PASSWORD, isAdmin));
+                return true;
+            } 
         }
 
         return false;
@@ -147,28 +169,24 @@ public class AccessControl {
     // ONLY ADMIN METHOD
     public boolean removeUser(String username) {
 
-        boolean userExists = false;
+        int userExists = userExists(username); //checks if username exisit
 
-        if (isCurrentUserAdmin() || !(this.currentUser == null)) {
-
-            // checks if user doesn't with same username
-            for (int i = 0; i < users.size(); i++) {
-                if (users.get(i).getUsername() == username) {
-                    userExists = true;
-                }
-            }
-
+<<<<<<< HEAD
             if (!userExists) {                           
                 return false;
             }
             return true;
+=======
+        if (isCurrentUserAdmin()) {
+            if (userExists > -1) {   // user exists
+                users.remove(userExists);
+                return true;
+            } else { // user doesn't exist, so nothing to remove
+                return false;
+            } 
+>>>>>>> e6bd0f15ebd719cb7e7b08ad3cb2649644811822
         }
 
-        for (int i = 0; i < users.size(); i++) {
-            // if (users.get(i).compareTo(username) == 0) {
-            // users.remove(i);
-            // }
-        }
         return false;
     } // Remove a user
     /**
@@ -182,14 +200,24 @@ public class AccessControl {
      */
     // ONLY ADMIN METHOD
     public boolean giveAdmin(String username) {
+        int userExists =userExists(username); ;//checks if username exisit;
+        
+        if (isCurrentUserAdmin()) {
+            
+            if (userExists > -1) {   // user exists
+                users.get(userExists).setIsAdmin(true);
+                return true;
+            } else { // user doesn't exist
+                return false;
+            } 
 
-        if (isCurrentUserAdmin() || !(this.currentUser == null)) {
-
-            return true;
         }
         return false;
+<<<<<<< HEAD
 
     
+=======
+>>>>>>> e6bd0f15ebd719cb7e7b08ad3cb2649644811822
     } // Give a user admin power
     /**
      * This method checks to make sure that username put into the parameter is an Addmin or that its
@@ -202,9 +230,23 @@ public class AccessControl {
      */
     // ONLY ADMIN METHOD
     public boolean takeAdmin(String username) {
+<<<<<<< HEAD
         if (isCurrentUserAdmin() || !(this.currentUser == null)) {
             //checks if isCurrentUserAdmin() methods is true and currentUser isn't null
             return true;
+=======
+int userExists =userExists(username); ;//checks if username exisit;
+        
+        if (isCurrentUserAdmin()) {
+            
+            if (userExists > -1) {   // user exists
+                users.get(userExists).setIsAdmin(false);
+                return true;
+            } else { // user doesn't exist
+                return false;
+            } 
+
+>>>>>>> e6bd0f15ebd719cb7e7b08ad3cb2649644811822
         }
         return false;
     } // Remove a user's admin power
@@ -220,9 +262,16 @@ public class AccessControl {
      *         abilities
      */
     public boolean resetPassword(String username) {
-        if (isCurrentUserAdmin() || !(this.currentUser == null)) {
-
-            return true;
+        int userExists =userExists(username); ;//checks if username exisit;
+        
+        if (isCurrentUserAdmin()) {
+            
+            if (userExists > -1) {   // user exists
+                users.get(userExists).setPassword(DEFAULT_PASSWORD);
+                return true;
+            } else { // user doesn't exist
+                return false;
+            }
         }
         return false;
     } // Reset a user's password
@@ -232,12 +281,31 @@ public class AccessControl {
 
     private boolean isCurrentUserAdmin() {
         if (!(this.currentUser == null)) {
-            if (isCurrentUserAdmin())
+            if (this.currentUser.getIsAdmin())
                 return true;
         } else {
             return false;
         }
         return false;
+    }
+    
+    //does user exists? if so, where. If no user is found return -1
+    private static int userExists(String username) {
+        int userIndex=-1;
+        boolean userExists =false;
+        
+        for (int i = 0; i < users.size(); i++) {
+            if (users.get(i).getUsername().equalsIgnoreCase(username)) {
+                userExists = true;
+                userIndex = i;
+                break;
+            }
+        }
+        
+        if(!userExists) {
+            userIndex = -1;
+        }
+        return userIndex;
     }
 
     /**
@@ -301,6 +369,7 @@ public class AccessControl {
 
     public void sessionScreen(String username, Scanner userInputScanner) {
 
+<<<<<<< HEAD
         String inputUser, command, param1, param2;
         String[] inputsUser;
         boolean inputBool = false;
@@ -315,6 +384,49 @@ public class AccessControl {
         while (true) {
             System.out.println("Welcome, " + this.currentUser.getUsername() + "!");
 
+=======
+            String inputUser, command, param1, param2;
+            String[] inputsUser;
+            boolean inputBool = false;
+            boolean methodResponse = false;
+            
+            int userExists =userExists(username); ;//checks if username exisit;
+            
+                
+                if (userExists > -1) {   // user exists
+                    this.currentUser = users.get(userExists);           
+                }
+                
+
+        
+        while(true) {
+            System.out.println("========== System Console ==========");
+            System.out.println("Welcome, " +this.currentUser.getUsername() + "!");
+            
+            System.out.println("===== Commands =====");
+            
+          //  logout
+        //  newpw [newpassword]
+        //  adduser [username]
+        //  adduser [username] [true or false]
+        //  rmuser [username]
+        //  giveadmin [username]
+        //  rmadmin [username]
+        //  resetpw [username]
+            System.out.println("Logout: logout");
+            System.out.println("Set new password: newpw [newpassword]");
+            System.out.println("Add new user: adduser [username]");
+            System.out.println("Add new user with admin privilegde: adduser [username] [true or false]");
+            System.out.println("Remove user: rmuser [username]");
+            System.out.println("Reset password: resetpw [username]");
+           
+            System.out.println("");
+            
+            System.out.println("Enter command: ");
+            
+            
+            
+>>>>>>> e6bd0f15ebd719cb7e7b08ad3cb2649644811822
             inputUser = userInputScanner.nextLine(); // todo: a single “word” with no spaces or
                                                      // other special characters
 
@@ -326,6 +438,7 @@ public class AccessControl {
                 param1 = inputsUser[1]; // TODO: check if the username can be enforeced to be
                                         // lowercase
                 param2 = inputsUser[2].toLowerCase();
+<<<<<<< HEAD
 
 
                 if (param2 == "true") {
@@ -336,6 +449,18 @@ public class AccessControl {
 
                 if (command == "adduser") {
                     methodResponse = addUser(param1, inputBool);
+=======
+                
+                
+                if(param2.equalsIgnoreCase("true")) {
+                    inputBool = true;
+                } else if(param2.equalsIgnoreCase("false")) {
+                    inputBool = false;
+                }  
+                
+                if(command.equalsIgnoreCase("adduser") ) {
+                    methodResponse = addUser(param1, inputBool );
+>>>>>>> e6bd0f15ebd719cb7e7b08ad3cb2649644811822
                 } else {
                     // TODO: implement incorrect command sequence
                 }
@@ -378,8 +503,13 @@ public class AccessControl {
 
             } else if (inputsUser.length == 1) {
                 command = inputsUser[0].toLowerCase();
+<<<<<<< HEAD
 
                 if (command == "logout") {
+=======
+                
+                if(command.equalsIgnoreCase("logout") ) {
+>>>>>>> e6bd0f15ebd719cb7e7b08ad3cb2649644811822
                     logout();
                     break;
                 }
